@@ -1,0 +1,11 @@
+{
+  "name": "js-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "School module to train on Javascript by coding a tic-tac-toe game",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "r0ulito",
+  "license": "MIT"
+}
