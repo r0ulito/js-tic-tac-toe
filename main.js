@@ -4,7 +4,7 @@ const winnerChildEl = document.querySelector('.winner .text');
 const humanPlayer = "X";
 const botPlayer = "O";
 let startBoard = [];
-let possibleMoves = [];
+let possibleMovesArray = [];
 const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -17,6 +17,11 @@ const winningCombinations = [
 ];
 
 startGame();
+
+
+function possibleMoves() {
+    return startBoard.filter(elem => typeof elem == 'number')
+}
 
 
 function startGame() {
@@ -32,9 +37,12 @@ function startGame() {
 
 function playerClickAction(event) {    
     playerAction(event.target.id, humanPlayer);
-    possibleMoves = startBoard.filter(elem => typeof elem == 'number');
-    const randomIndex =  Math.floor(Math.random()*possibleMoves.length);
-    playerAction(possibleMoves[randomIndex], botPlayer);
+    possibleMovesArray = possibleMoves();
+    const randomIndex =  Math.floor(Math.random()*possibleMovesArray.length);
+    if(!isGameDraw() && isPlayerWinner(startBoard, humanPlayer) === null) {
+        playerAction(possibleMovesArray[randomIndex], botPlayer);
+    }
+    
 };
 
 function playerAction(id, player) {
@@ -76,6 +84,19 @@ function gameEnd(gameState) {
 
     winnerChildEl.innerText = gameState.player === humanPlayer ? 'You win !!!' : 'You lose !!!';
     winnerParentEl.style.display = "block";
+}
+
+function isGameDraw() {
+	if(possibleMovesArray.length === 0) {
+        if(isPlayerWinner(startBoard, humanPlayer) !== null || isPlayerWinner(startBoard, botPlayer) !== null) {
+            return false;
+        }
+		cells.forEach(el => el.style.backgroundColor = 'rgba(0, 255, 0, 0.5)');
+		winnerChildEl.innerText = 'Draw !';
+		winnerParentEl.style.display = 'block';
+		return true;
+	}
+	return false;
 }
 
 
